@@ -1,16 +1,24 @@
 import { type Serve } from "bun";
 import { readdirSync } from "fs";
 
-function getRandom(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min) + min);
+function randomInt(max: number) {
+  return Math.floor(Math.random() * max);
 }
+
+function randomImg() {
+  const dir = readdirSync("images");
+  const files = dir.filter((file) => !file.startsWith("."));
+  const random = randomInt(files.length);
+  const path = `images/${files[random]}`;
+  return Bun.file(path);
+}
+const port = 3000;
 
 export default {
   fetch(req) {
-    const files = readdirSync("images");
-    const random = getRandom(0, files.length);
-    const path = `images/${files[random]}`;
-    const file = Bun.file(path);
-    return new Response(file.stream());
+    return new Response(randomImg());
   },
+  port,
 } satisfies Serve;
+
+console.log(`bun running on ${port}`);
