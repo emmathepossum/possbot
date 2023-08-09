@@ -1,0 +1,14 @@
+{
+  "name": "possbot",
+  "author": "Emma the Possum",
+  "module": "index.ts",
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "description": "Possum-themed Discord Bot",
+  "license": "MIT",
+  "type": "module"
+}
