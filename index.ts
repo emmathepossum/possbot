@@ -1,24 +1,27 @@
-import { type Serve } from "bun";
-import { readdirSync } from "fs";
+import { Client, Events, GatewayIntentBits, REST, Routes } from "discord.js";
+import possum from "./commands/possum";
 
-function randomInt(max: number) {
-  return Math.floor(Math.random() * max);
-}
+const { CLIENT_ID = "", DISCORD_TOKEN = "" } = process.env;
 
-function randomImg() {
-  const dir = readdirSync("images");
-  const files = dir.filter((file) => !file.startsWith("."));
-  const random = randomInt(files.length);
-  const path = `images/${files[random]}`;
-  return Bun.file(path);
-}
-const port = 3000;
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-export default {
-  fetch(req) {
-    return new Response(randomImg());
-  },
-  port,
-} satisfies Serve;
+client.login(DISCORD_TOKEN);
 
-console.log(`bun running on ${port}`);
+client.on(Events.InteractionCreate, (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
+  if (interaction.commandName === "possum") possum.execute(interaction);
+});
+
+const rest = new REST().setToken(DISCORD_TOKEN);
+
+(async () => {
+  try {
+    const commands = [possum.data.toJSON()];
+    const data = (await rest.put(Routes.applicationCommands(CLIENT_ID), {
+      body: commands,
+    })) as any;
+    console.log(`Successfully loaded ${data.length} application (/) commands.`);
+  } catch (error) {
+    console.error(error);
+  }
+})();
