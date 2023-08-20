@@ -3,11 +3,11 @@ import { randomImg } from "./utils";
 
 export default {
   data: new SlashCommandBuilder()
-    .setName("possum")
-    .setDescription("Replies with a cute possum!"),
+    .setName("bat")
+    .setDescription("Replies with a cute bat!"),
 
   async execute(interaction: any) {
-    const img = randomImg("images/possums");
+    const img = randomImg("images/bats");
     await interaction.reply({
       files: [
         {

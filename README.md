@@ -1,5 +1,21 @@
 # possbot
 
+## Commands
+
+random possum image:
+
+```
+/possum
+```
+
+random bat image:
+
+```
+/bat
+```
+
+## Dev
+
 To install dependencies:
 
 ```bash
