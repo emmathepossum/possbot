@@ -1,0 +1,8 @@
+version: "3"
+services:
+  possbot:
+    container_name: possbot
+    build: "./"
+    volumes:
+      - "./images:/home/bun/app/images"
+    restart: always
