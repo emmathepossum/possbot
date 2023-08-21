@@ -1,6 +1,7 @@
 import { Client, Events, GatewayIntentBits, REST, Routes } from "discord.js";
 import possum from "./commands/possum";
 import bat from "./commands/bat";
+import bunny from "./commands/bunny";
 
 const { CLIENT_ID = "", DISCORD_TOKEN = "" } = process.env;
 
@@ -12,13 +13,18 @@ client.on(Events.InteractionCreate, (interaction) => {
   if (!interaction.isChatInputCommand()) return;
   if (interaction.commandName === "possum") possum.execute(interaction);
   if (interaction.commandName === "bat") bat.execute(interaction);
+  if (interaction.commandName === "bunny") bunny.execute(interaction);
 });
 
 const rest = new REST().setToken(DISCORD_TOKEN);
 
 (async () => {
   try {
-    const commands = [possum.data.toJSON(), bat.data.toJSON()];
+    const commands = [
+      possum.data.toJSON(),
+      bat.data.toJSON(),
+      bunny.data.toJSON(),
+    ];
     const data = (await rest.put(Routes.applicationCommands(CLIENT_ID), {
       body: commands,
     })) as any;
